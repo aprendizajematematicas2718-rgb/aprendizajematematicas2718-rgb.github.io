@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fundamento Matemático — Clases visuales y preparación Saber 11</title>
+<meta name="description" content="Enseñanza de matemáticas basada en conceptos fundamentales, apoyada en representaciones visuales e interactivas, con diagnóstico de alta precisión para las Pruebas Saber 11.">
+<meta name="theme-color" content="#ffffff">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ================================================================
+   FUNDAMENTO MATEMÁTICO — hoja de estilos editorial
+   Tipografía: Fraunces (display) + Manrope (UI/cuerpo)
+   Paleta de marca: azul #2563EB · violeta #7C3AED · verde #16A34A
+                     naranja #F97316 · rojo #EF4444
+   ================================================================ */
+
+:root {
+  --blue: #2563EB;
+  --violet: #7C3AED;
+  --green: #16A34A;
+  --orange: #F97316;
+  --red: #EF4444;
+  --ink: #0F172A;
+  --ink-soft: #475569;
+  --hairline: #E2E8F0;
+  --paper: #FFFFFF;
+  --paper-soft: #FAFAF9;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Manrope', sans-serif;
+
+  --wrap: 1180px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { box-sizing: border-box; }
+html, body { max-width: 100%; overflow-x: hidden; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-feature-settings: 'tnum' 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 900px) {
+  .wrap { padding: 0 48px; }
+}
+
+img, svg { display: block; max-width: 100%; }
+
+a { color: inherit; }
+
+section { position: relative; }
+
+/* ---------------------------------------------------------
+   Movimiento reducido: se desactivan capas y reveals
+--------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ================================================================
+   BARRA DE PROGRESO DE LECTURA
+   ================================================================ */
+.progress-rail {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: transparent;
+  z-index: 200;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--blue), var(--violet));
+  transition: width 0.05s linear;
+}
+
+/* ================================================================
+   PRECARGA
+   ================================================================ */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  transition: opacity 0.6s var(--ease), visibility 0.6s var(--ease);
+}
+.preloader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.preloader-inner {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  font-family: var(--font-display);
+}
+.preloader-word {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.preloader-count {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blue);
+  font-variant-numeric: tabular-nums;
+  min-width: 3.2ch;
+}
+.preloader-bar {
+  width: min(320px, 70vw);
+  height: 2px;
+  background: var(--hairline);
+}
+.preloader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--ink);
+}
+
+/* ================================================================
+   NAV
+   ================================================================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 150;
+  background: rgba(255, 255, 255, 0);
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease), backdrop-filter 0.3s var(--ease);
+}
+.site-header.is-solid {
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  border-bottom-color: var(--hairline);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+}
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.main-nav {
+  display: none;
+  gap: 28px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+.main-nav a { text-decoration: none; transition: color 0.2s ease; }
+.main-nav a:hover { color: var(--blue); }
+
+@media (min-width: 980px) {
+  .main-nav { display: flex; }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.live-clock {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+@media (min-width: 700px) {
+  .live-clock { display: inline-flex; }
+}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  animation: pulse 2.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.8); }
+}
+.clock-sep { opacity: 0.4; }
+
+/* ---------- botones ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 15px 30px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.96rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
+}
+.btn-sm { padding: 10px 20px; font-size: 0.84rem; }
+.btn-orange {
+  background: var(--orange);
+  color: #fff;
+  box-shadow: 0 10px 24px -10px rgba(249, 115, 22, 0.55);
+}
+.btn-orange:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -10px rgba(249, 115, 22, 0.6); }
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: #CBD5E1;
+}
+.btn-ghost:hover { border-color: var(--blue); color: var(--blue); }
+
+/* ================================================================
+   TIPOGRAFÍA EDITORIAL COMPARTIDA
+   ================================================================ */
+.eyebrow {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--blue);
+  margin: 0 0 18px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  margin: 0 0 18px;
+  max-width: 18ch;
+}
+.section-lead {
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  max-width: 46ch;
+  line-height: 1.6;
+  margin: 0 0 56px;
+}
+
+/* ================================================================
+   HERO
+   ================================================================ */
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: 90px;
+  padding-bottom: 90px;
+}
+
+.hero-grid {
+  position: absolute;
+  inset: -10%;
+  background-image:
+    linear-gradient(to right, rgba(37, 99, 235, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 35%, black 30%, transparent 78%);
+          mask-image: radial-gradient(ellipse 70% 55% at 50% 35%, black 30%, transparent 78%);
+  z-index: 0;
+}
+
+.hero-shape { position: absolute; z-index: 1; pointer-events: none; }
+.hero-shape-a { width: 130px; top: 14%; left: 6%; }
+.hero-shape-b { width: 110px; top: 18%; right: 8%; }
+.hero-shape-c { width: 90px; bottom: 20%; left: 10%; }
+.hero-shape-d { width: 190px; bottom: 12%; right: 6%; }
+.hero-shape-e { width: 60px; top: 52%; left: 3%; }
+
+@media (max-width: 760px) {
+  .hero-shape-a, .hero-shape-b, .hero-shape-d { opacity: 0.55; transform: scale(0.7); }
+  .hero-shape-e { display: none; }
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  margin: 0 auto;
+  max-width: 16ch;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.6rem, 8vw, 5.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+.hero-title span { display: block; }
+.hero-title em { font-style: italic; color: var(--blue); }
+
+.hero-sub {
+  margin: 30px auto 0;
+  max-width: 44ch;
+  font-size: clamp(1.02rem, 1.6vw, 1.2rem);
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.hero-actions {
+  margin-top: 42px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.scroll-cue {
+  position: relative;
+  z-index: 2;
+  margin: 56px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.scroll-cue-dot {
+  animation: scrollDot 1.8s ease-in-out infinite;
+}
+@keyframes scrollDot {
+  0% { transform: translateY(0); opacity: 1; }
+  60% { transform: translateY(10px); opacity: 0; }
+  61% { transform: translateY(0); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* ================================================================
+   MANIFIESTO
+   ================================================================ */
+.manifesto {
+  padding: 120px 0;
+  overflow: hidden;
+}
+.manifesto-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(14rem, 34vw, 30rem);
+  font-weight: 600;
+  color: var(--ink);
+  opacity: 0.035;
+  line-height: 1;
+  z-index: 0;
+  user-select: none;
+}
+.manifesto .wrap { position: relative; z-index: 1; }
+.manifesto-text {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3.4vw, 2.5rem);
+  line-height: 1.42;
+  letter-spacing: -0.01em;
+  max-width: 22ch;
+}
+.manifesto-text .line { display: block; }
+.manifesto-text em { color: var(--violet); font-style: italic; }
+
+/* ================================================================
+   CIFRAS
+   ================================================================ */
+.stats {
+  padding: 90px 0;
+  background: var(--paper-soft);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  overflow: hidden;
+}
+.stats-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to bottom, rgba(37,99,235,0.05) 1px, transparent 1px);
+  background-size: 100% 44px;
+  z-index: 0;
+}
+.stats-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 48px;
+  grid-template-columns: 1fr;
+  text-align: center;
+}
+@media (min-width: 700px) {
+  .stats-inner { grid-template-columns: repeat(3, 1fr); text-align: left; }
+}
+.stat { display: flex; flex-direction: column; gap: 8px; }
+.stat-number {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(3rem, 6vw, 4.6rem);
+  color: var(--blue);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.stat:nth-child(2) .stat-number { color: var(--violet); }
+.stat:nth-child(3) .stat-number { color: var(--green); }
+.stat-label {
+  font-size: 0.98rem;
+  color: var(--ink-soft);
+  max-width: 26ch;
+}
+
+/* ================================================================
+   PROCESO
+   ================================================================ */
+.process { padding: 140px 0 120px; }
+.process-list {
+  margin-top: 64px;
+  border-top: 1px solid var(--hairline);
+}
+.process-item {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 28px;
+  align-items: start;
+  padding: 44px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+@media (min-width: 700px) {
+  .process-item { grid-template-columns: 120px 1fr; }
+}
+.process-num {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  -webkit-text-stroke: 1px var(--ink);
+  color: transparent;
+}
+@supports not (-webkit-text-stroke: 1px black) {
+  .process-num { color: var(--ink); opacity: 0.25; -webkit-text-stroke: 0; }
+}
+.process-item h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  letter-spacing: -0.01em;
+}
+.process-item p {
+  margin: 0;
+  color: var(--ink-soft);
+  max-width: 52ch;
+  line-height: 1.6;
+}
+
+/* ================================================================
+   LABORATORIO
+   ================================================================ */
+.lab { padding: 120px 0; background: var(--paper-soft); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+
+.lab-grid {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+@media (min-width: 980px) {
+  .lab-grid { grid-template-columns: 0.9fr 1.4fr; }
+}
+
+.lab-tabs {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+@media (min-width: 980px) {
+  .lab-tabs { flex-direction: column; overflow: visible; }
+}
+
+.lab-tab {
+  flex-shrink: 0;
+  width: 260px;
+  text-align: left;
+  background: #fff;
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  padding: 20px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  font-family: var(--font-body);
+}
+@media (min-width: 980px) {
+  .lab-tab { width: auto; }
+}
+.lab-tab:hover { border-color: #CBD5E1; transform: translateY(-2px); }
+.lab-tab.is-active { border-color: var(--blue); background: #EFF4FF; }
+.lab-tab p { margin: 10px 0 0; font-size: 0.88rem; color: var(--ink-soft); line-height: 1.5; }
+
+.tab-head { display: flex; align-items: center; gap: 12px; font-weight: 700; color: var(--ink); }
+.tab-dot {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  font-family: var(--font-display); font-weight: 600;
+  flex-shrink: 0;
+}
+.tab-dot-violet { background: rgba(124, 58, 237, 0.12); color: var(--violet); }
+.tab-dot-blue { background: rgba(37, 99, 235, 0.12); color: var(--blue); }
+.tab-dot-green { background: rgba(22, 163, 74, 0.12); color: var(--green); }
+
+.lab-panel-card {
+  background: #fff;
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 30px 60px -30px rgba(15, 23, 42, 0.14);
+}
+@media (min-width: 640px) {
+  .lab-panel-card { padding: 36px; }
+}
+
+.lab-panel.hidden { display: none; }
+.lab-panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.lab-panel-head h3 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: 1.3rem; }
+.lab-panel-head p { margin: 6px 0 0; font-size: 0.9rem; color: var(--ink-soft); }
+
+.link-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-weight: 700; font-size: 0.86rem;
+  color: var(--violet); white-space: nowrap;
+}
+.link-btn:hover { color: #6b21a8; }
+
+.manip-grid {
+  position: relative;
+  height: 360px;
+  border-radius: 16px;
+  background-color: #FAFAF9;
+  background-image:
+    linear-gradient(to right, rgba(100,116,139,0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100,116,139,0.14) 1px, transparent 1px);
+  background-size: 40px 40px;
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+  touch-action: none;
+}
+.manip-piece {
+  position: absolute;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  filter: drop-shadow(0 4px 6px rgba(15, 23, 42, 0.12));
+}
+.manip-piece:active { cursor: grabbing; }
+
+.lab-panel-foot { margin-top: 18px; font-size: 0.92rem; color: var(--ink-soft); }
+.c-blue { color: var(--blue); } .c-violet { color: var(--violet); } .c-green { color: var(--green); }
+
+.func-canvas {
+  width: 100%; height: 300px;
+  border-radius: 16px;
+  background: #FAFAF9;
+  border: 1px solid var(--hairline);
+}
+.slider-grid {
+  margin-top: 26px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .slider-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.slider-grid label { display: block; font-size: 0.86rem; font-weight: 600; color: var(--ink-soft); }
+.slider-grid input { width: 100%; margin-top: 10px; accent-color: var(--blue); }
+
+.map-canvas {
+  width: 100%; height: 340px;
+  border-radius: 16px;
+  background: #FAFAF9;
+  border: 1px solid var(--hairline);
+}
+.map-node { cursor: pointer; }
+.map-node circle { transition: fill-opacity 0.15s ease; }
+.map-edge { transition: stroke 0.2s ease, stroke-width 0.2s ease; }
+
+/* ================================================================
+   TRAYECTORIA
+   ================================================================ */
+.trajectory { padding: 140px 0; overflow: hidden; }
+.trajectory-bg {
+  position: absolute;
+  top: 50%; right: -4%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: clamp(16rem, 30vw, 26rem);
+  color: var(--violet);
+  opacity: 0.045;
+  line-height: 1;
+  z-index: 0;
+}
+.trajectory .wrap { position: relative; z-index: 1; }
+
+.traj-list { margin-top: 56px; border-top: 1px solid var(--hairline); }
+.traj-row {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  row-gap: 6px;
+  align-items: center;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+@media (min-width: 760px) {
+  .traj-row { grid-template-columns: 44px 1.4fr 1.6fr auto; column-gap: 24px; }
+}
+.traj-index {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+.traj-role {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  grid-column: 2 / -1;
+}
+@media (min-width: 760px) {
+  .traj-role { grid-column: auto; }
+}
+.traj-org {
+  color: var(--ink-soft);
+  font-size: 0.96rem;
+  grid-column: 2 / -1;
+}
+@media (min-width: 760px) {
+  .traj-org { grid-column: auto; }
+}
+.traj-tag {
+  justify-self: start;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  grid-column: 2 / -1;
+}
+@media (min-width: 760px) {
+  .traj-tag { grid-column: auto; justify-self: end; }
+}
+.traj-tag-blue { background: rgba(37,99,235,0.1); color: var(--blue); }
+.traj-tag-violet { background: rgba(124,58,237,0.1); color: var(--violet); }
+.traj-tag-green { background: rgba(22,163,74,0.1); color: var(--green); }
+.traj-tag-orange { background: rgba(249,115,22,0.1); color: var(--orange); }
+
+/* ================================================================
+   CONTACTO
+   ================================================================ */
+.contact { padding: 140px 0 100px; }
+.contact-inner { max-width: 720px; }
+.contact-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.6rem, 6vw, 4rem);
+  margin: 0 0 18px;
+  letter-spacing: -0.02em;
+}
+.contact-sub { color: var(--ink-soft); font-size: 1.05rem; max-width: 48ch; margin: 0 0 44px; line-height: 1.6; }
+
+.contact-form { display: flex; flex-direction: column; gap: 20px; }
+.form-row { display: grid; gap: 20px; grid-template-columns: 1fr; }
+@media (min-width: 640px) {
+  .form-row { grid-template-columns: 1fr 1fr; }
+}
+.contact-form label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--ink-soft); }
+.contact-form input,
+.contact-form select {
+  margin-top: 8px;
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 12px;
+  border: 1px solid #CBD5E1;
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  color: var(--ink);
+  background: #fff;
+}
+.contact-form input:focus,
+.contact-form select:focus {
+  outline: 2px solid var(--blue);
+  outline-offset: 1px;
+  border-color: var(--blue);
+}
+.contact-form .btn { align-self: flex-start; margin-top: 6px; }
+.form-note { font-size: 0.8rem; color: #94A3B8; margin: 0; }
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+.site-footer { border-top: 1px solid var(--hairline); padding: 32px 0; }
+.footer-inner {
+  display: flex; flex-wrap: wrap; gap: 16px 28px;
+  align-items: center; justify-content: space-between;
+  font-size: 0.86rem; color: var(--ink-soft);
+}
+.live-clock-footer { display: inline-flex; }
+.footer-email a { text-decoration: none; font-weight: 600; color: var(--ink); }
+.footer-email a:hover { color: var(--blue); }
+.footer-copy { margin: 0; }
+
+/* ================================================================
+   MOTOR DE REVELADO (scroll reveal) — variantes deliberadas por sección
+   ================================================================ */
+/* Solo se ocultan si JS está activo (progressive enhancement);
+   sin JS, o si algo falla, el contenido es visible desde el inicio. */
+.js .reveal {
+  opacity: 0;
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), filter 0.8s var(--ease);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+.js .reveal--fade { transform: translateY(16px); }
+.js .reveal--lines { transform: translateY(22px); filter: blur(6px); }
+.js .reveal--up { transform: translateY(34px); }
+.js .reveal--left { transform: translateX(-26px); }
+.js .reveal--right { transform: translateX(26px); }
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+/* ================================================================
+   CAPAS CON PARALLAX
+   ================================================================ */
+.parallax-layer {
+  will-change: transform;
+}
+
+</style>
+<script>document.documentElement.classList.add('js');</script>
+<noscript><style>#preloader{display:none !important;}</style></noscript>
+</head>
+<body>
+
+<!-- ============ BARRA DE PROGRESO DE LECTURA ============ -->
+<div class="progress-rail" aria-hidden="true"><div id="progressFill" class="progress-fill"></div></div>
+
+<!-- ============ PRECARGA ============ -->
+<div id="preloader" class="preloader" aria-hidden="true">
+  <div class="preloader-inner">
+    <span class="preloader-word">Fundamento</span>
+    <span id="preloaderCount" class="preloader-count">0%</span>
+  </div>
+  <div class="preloader-bar"><div id="preloaderBar" class="preloader-bar-fill"></div></div>
+</div>
+
+<!-- ============ NAV ============ -->
+<header id="siteHeader" class="site-header">
+  <div class="wrap header-inner">
+    <a href="#inicio" class="brand">
+      <span class="brand-mark">f</span>
+      <span class="brand-name">Fundamento&nbsp;Matemático</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="#laboratorio">Laboratorio</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#trayectoria">Trayectoria</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="header-right">
+      <div class="live-clock" aria-live="off">
+        <span class="live-dot"></span>
+        <span id="clockCity">Bogotá D.C.</span>
+        <span class="clock-sep">·</span>
+        <span id="clockTime">00:00:00</span>
+      </div>
+      <a href="#contacto" class="btn btn-orange btn-sm">Agendar diagnóstico</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section id="inicio" class="hero">
+  <div class="hero-grid parallax-layer" data-speed="0.06" aria-hidden="true"></div>
+
+  <svg class="hero-shape hero-shape-a parallax-layer" data-speed="0.18" viewBox="0 0 140 140" aria-hidden="true">
+    <rect x="10" y="10" width="120" height="120" rx="14" fill="none" stroke="#2563EB" stroke-width="2" opacity=".5"/>
+  </svg>
+  <svg class="hero-shape hero-shape-b parallax-layer" data-speed="0.32" viewBox="0 0 160 140" aria-hidden="true">
+    <polygon points="80,8 152,132 8,132" fill="#7C3AED" opacity=".85"/>
+  </svg>
+  <svg class="hero-shape hero-shape-c parallax-layer" data-speed="0.12" viewBox="0 0 120 120" aria-hidden="true">
+    <circle cx="60" cy="60" r="52" fill="none" stroke="#16A34A" stroke-width="2.5" opacity=".55"/>
+  </svg>
+  <svg class="hero-shape hero-shape-d parallax-layer" data-speed="0.24" viewBox="0 0 220 90" aria-hidden="true">
+    <path d="M4,70 C 40,10 70,110 106,60 C 142,10 172,110 216,50" fill="none" stroke="#F97316" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+  </svg>
+  <svg class="hero-shape hero-shape-e parallax-layer" data-speed="0.4" viewBox="0 0 90 90" aria-hidden="true">
+    <polygon points="45,4 82,45 45,86 8,45" fill="#EF4444" opacity=".8"/>
+  </svg>
+
+  <div class="wrap hero-inner">
+    <p class="eyebrow reveal reveal--fade">clases visuales · diagnóstico saber 11</p>
+    <h1 class="hero-title">
+      <span class="reveal reveal--lines" style="--d:0">Las matemáticas,</span>
+      <span class="reveal reveal--lines" style="--d:1">comprendidas</span>
+      <span class="reveal reveal--lines" style="--d:2">desde su <em>fundamento</em>.</span>
+    </h1>
+    <p class="hero-sub reveal reveal--fade" style="--d:3">
+      Un método que combina manipulativos interactivos, geometría dinámica y
+      rutas conceptuales con la precisión de un diagnóstico estandarizado
+      por competencias.
+    </p>
+    <div class="hero-actions reveal reveal--fade" style="--d:4">
+      <a href="#contacto" class="btn btn-orange">Solicitar diagnóstico o clase</a>
+      <a href="#laboratorio" class="btn btn-ghost">Ver el laboratorio visual</a>
+    </div>
+  </div>
+
+  <button type="button" class="scroll-cue" id="scrollCue" aria-label="Desplázate hacia abajo">
+    <span>Desliza para explorar</span>
+    <svg viewBox="0 0 16 26" width="16" height="26" aria-hidden="true">
+      <rect x="1" y="1" width="14" height="24" rx="7" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle class="scroll-cue-dot" cx="8" cy="8" r="2.4" fill="currentColor"/>
+    </svg>
+  </button>
+</section>
+
+<!-- ============ MANIFIESTO ============ -->
+<section class="manifesto">
+  <div class="manifesto-bg parallax-layer" data-speed="0.1" aria-hidden="true">01</div>
+  <div class="wrap">
+    <p class="eyebrow reveal reveal--fade">el porqué</p>
+    <p class="manifesto-text">
+      <span class="line reveal reveal--lines" style="--d:0">Enseñamos matemáticas empezando por el concepto,</span>
+      <span class="line reveal reveal--lines" style="--d:1">no por la fórmula memorizada. Cada idea se toca,</span>
+      <span class="line reveal reveal--lines" style="--d:2">se mueve y se comprueba antes de escribirse en el</span>
+      <span class="line reveal reveal--lines" style="--d:3">cuaderno — para que el estudiante entienda</span>
+      <span class="line reveal reveal--lines" style="--d:4"><em>por qué</em> funciona, no solo cómo aplicarlo.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============ CIFRAS ============ -->
+<section class="stats">
+  <div class="stats-grid parallax-layer" data-speed="0.05" aria-hidden="true"></div>
+  <div class="wrap stats-inner">
+    <div class="stat reveal reveal--up" style="--d:0">
+      <span class="stat-number" data-count="3" data-suffix="">0</span>
+      <span class="stat-label">competencias Icfes evaluadas a fondo</span>
+    </div>
+    <div class="stat reveal reveal--up" style="--d:1">
+      <span class="stat-number" data-count="25" data-suffix="">0</span>
+      <span class="stat-label">preguntas en la prueba estandarizada completa</span>
+    </div>
+    <div class="stat reveal reveal--up" style="--d:2">
+      <span class="stat-number" data-count="4" data-suffix="">0</span>
+      <span class="stat-label">niveles de desempeño en cada informe</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESO ============ -->
+<section id="proceso" class="process">
+  <div class="wrap">
+    <p class="eyebrow reveal reveal--fade">nuestro proceso</p>
+    <h2 class="section-title reveal reveal--fade">No enseñamos para el examen.<br>Preparamos para entender.</h2>
+
+    <div class="process-list">
+      <article class="process-item reveal reveal--left" style="--d:0">
+        <span class="process-num">01</span>
+        <div>
+          <h3>Diagnosticamos</h3>
+          <p>Una primera prueba corta ubica el punto de partida real del
+            estudiante, sin suposiciones y con retroalimentación directa
+            en la misma sesión.</p>
+        </div>
+      </article>
+
+      <article class="process-item reveal reveal--left" style="--d:1">
+        <span class="process-num">02</span>
+        <div>
+          <h3>Enseñamos con fundamento visual</h3>
+          <p>Manipulativos, geometría dinámica y mapas conceptuales
+            construyen la comprensión antes de formalizarla — el mismo
+            espíritu de Polypad y GeoGebra.</p>
+        </div>
+      </article>
+
+      <article class="process-item reveal reveal--left" style="--d:2">
+        <span class="process-num">03</span>
+        <div>
+          <h3>Preparamos con rigor Icfes</h3>
+          <p>Pruebas estandarizadas por competencias, con informe
+            analítico por niveles de desempeño y un plan de acción
+            personalizado.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LABORATORIO VISUAL INTERACTIVO ============ -->
+<section id="laboratorio" class="lab">
+  <div class="wrap">
+    <p class="eyebrow reveal reveal--fade">metodología</p>
+    <h2 class="section-title reveal reveal--fade">Un laboratorio para tocar, mover y comprobar cada concepto</h2>
+    <p class="section-lead reveal reveal--fade">
+      Antes de memorizar una fórmula, la exploramos con manipulativos,
+      geometría dinámica y mapas conceptuales.
+    </p>
+
+    <div class="lab-grid">
+      <div class="lab-tabs reveal reveal--left" role="tablist" aria-label="Pilares del laboratorio visual">
+        <button type="button" data-tab="manipulativos" role="tab" aria-selected="true" class="lab-tab is-active">
+          <span class="tab-head"><span class="tab-dot tab-dot-violet">1</span><span>Manipulativos</span></span>
+          <p>Arrastra piezas geométricas para descubrir área, simetría y proporción.</p>
+        </button>
+        <button type="button" data-tab="geometria" role="tab" aria-selected="false" class="lab-tab">
+          <span class="tab-head"><span class="tab-dot tab-dot-blue">2</span><span>Geometría dinámica</span></span>
+          <p>Mueve los deslizadores y observa cómo cambia una función en tiempo real.</p>
+        </button>
+        <button type="button" data-tab="mapas" role="tab" aria-selected="false" class="lab-tab">
+          <span class="tab-head"><span class="tab-dot tab-dot-green">3</span><span>Rutas conceptuales</span></span>
+          <p>Explora cómo se conecta cada tema con los demás dentro del plan de estudio.</p>
+        </button>
+      </div>
+
+      <div class="lab-panel-wrap reveal reveal--right">
+        <div class="lab-panel-card">
+
+          <div id="panel-manipulativos" class="lab-panel">
+            <div class="lab-panel-head">
+              <div>
+                <h3>Tangram de áreas</h3>
+                <p>Arrastra las piezas sobre la cuadrícula. Cada casilla equivale a 1 unidad².</p>
+              </div>
+              <button type="button" id="resetShapes" class="link-btn">Reordenar piezas</button>
+            </div>
+            <div id="shapeCanvas" class="manip-grid"></div>
+            <p class="lab-panel-foot">Área total cubierta: <strong id="areaTotal">0</strong> unidades²</p>
+          </div>
+
+          <div id="panel-geometria" class="lab-panel hidden">
+            <div class="lab-panel-head">
+              <h3>f(x) = <span class="c-blue" id="coefA">1</span>x² +
+                <span class="c-violet" id="coefB">0</span>x +
+                <span class="c-green" id="coefC">0</span></h3>
+            </div>
+            <canvas id="functionPlot" class="func-canvas"></canvas>
+            <div class="slider-grid">
+              <label><span>a — concavidad</span><input type="range" min="-3" max="3" step="0.5" value="1" id="sliderA"></label>
+              <label><span>b — desplazamiento</span><input type="range" min="-6" max="6" step="0.5" value="0" id="sliderB"></label>
+              <label><span>c — corte en y</span><input type="range" min="-6" max="6" step="0.5" value="0" id="sliderC"></label>
+            </div>
+            <p class="lab-panel-foot" id="functionReadout"></p>
+          </div>
+
+          <div id="panel-mapas" class="lab-panel hidden">
+            <div class="lab-panel-head">
+              <h3>Ruta: pensamiento variacional</h3>
+              <p>Selecciona un concepto para ver de qué depende y a qué da paso.</p>
+            </div>
+            <svg id="mindMap" viewBox="0 0 640 320" class="map-canvas"></svg>
+            <p class="lab-panel-foot" id="mindMapReadout">Toca cualquier nodo para comenzar.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRAYECTORIA ============ -->
+<section id="trayectoria" class="trajectory">
+  <div class="trajectory-bg parallax-layer" data-speed="0.08" aria-hidden="true">τ</div>
+  <div class="wrap">
+    <p class="eyebrow reveal reveal--fade">trayectoria</p>
+    <h2 class="section-title reveal reveal--fade">Formación desde dentro del aula y desde la dirección académica</h2>
+
+    <div class="traj-list">
+      <div class="traj-row reveal reveal--fade" style="--d:0">
+        <span class="traj-index">01</span>
+        <span class="traj-role">Rector</span>
+        <span class="traj-org">Liceo Campo David</span>
+        <span class="traj-tag traj-tag-blue">Dirección institucional</span>
+      </div>
+      <div class="traj-row reveal reveal--fade" style="--d:1">
+        <span class="traj-index">02</span>
+        <span class="traj-role">Docente de Matemáticas</span>
+        <span class="traj-org">Liceo Campo David</span>
+        <span class="traj-tag traj-tag-violet">Aula y acompañamiento</span>
+      </div>
+      <div class="traj-row reveal reveal--fade" style="--d:2">
+        <span class="traj-index">03</span>
+        <span class="traj-role">Jefe del Departamento de Matemáticas</span>
+        <span class="traj-org">Gimnasio Campestre Marie Curie</span>
+        <span class="traj-tag traj-tag-green">Liderazgo curricular</span>
+      </div>
+      <div class="traj-row reveal reveal--fade" style="--d:3">
+        <span class="traj-index">04</span>
+        <span class="traj-role">Coordinador Académico</span>
+        <span class="traj-org">Gimnasio Campestre Marie Curie</span>
+        <span class="traj-tag traj-tag-orange">Coordinación pedagógica</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACTO ============ -->
+<section id="contacto" class="contact">
+  <div class="wrap contact-inner">
+    <p class="eyebrow reveal reveal--fade">contacto</p>
+    <h2 class="contact-title reveal reveal--lines">¿Empezamos?</h2>
+    <p class="contact-sub reveal reveal--fade">
+      Cuéntanos el grado y el objetivo del estudiante — te respondemos
+      con los siguientes pasos.
+    </p>
+
+    <form class="contact-form reveal reveal--fade" id="contactForm" action="https://formspree.io/f/TU_ID_DE_FORMSPREE" method="POST">
+      <div class="form-row">
+        <label>Nombre del estudiante o acudiente
+          <input type="text" name="nombre" required>
+        </label>
+        <label>Grado / nivel
+          <input type="text" name="grado" required>
+        </label>
+      </div>
+      <div class="form-row">
+        <label>Servicio de interés
+          <select name="servicio">
+            <option>Clases visuales</option>
+            <option>Diagnóstico 10 preguntas</option>
+            <option>Diagnóstico 25 preguntas completo</option>
+          </select>
+        </label>
+        <label>WhatsApp o correo de contacto
+          <input type="text" name="contacto" required>
+        </label>
+      </div>
+      <button type="submit" class="btn btn-orange">Enviar solicitud</button>
+      <p class="form-note">* Conecta este formulario a tu cuenta de Formspree (ver README) para recibir las solicitudes en aprendizajematematicas2718@gmail.com.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="live-clock live-clock-footer">
+      <span class="live-dot"></span>
+      <span id="clockCityFooter">Bogotá D.C.</span>
+      <span class="clock-sep">·</span>
+      <span id="clockTimeFooter">00:00:00</span>
+    </div>
+    <p class="footer-email"><a href="mailto:aprendizajematematicas2718@gmail.com">aprendizajematematicas2718@gmail.com</a></p>
+    <p class="footer-copy">© <span id="year"></span> Fundamento Matemático.</p>
+  </div>
+</footer>
+
+<script>
+// ================================================================
+// Fundamento Matemático — landing editorial
+// Preloader · reloj en vivo · progreso de lectura · capas parallax
+// · scroll reveal · contadores animados · laboratorio interactivo
+// ================================================================
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Red de seguridad: si algo falla a mitad de la inicialización, el
+  // contenido (marcado invisible por CSS solo cuando JS está activo)
+  // nunca debe quedar oculto de forma permanente.
+  try {
+    initPreloader();
+    initHeaderState();
+    initProgressBar();
+    initClock();
+    initReveals();
+    initParallax();
+    initTabs();
+    initShapes();
+    initFunctionPlot();
+    initMindMap();
+    initCounters();
+    initScrollCue();
+    document.getElementById('year').textContent = new Date().getFullYear();
+  } catch (err) {
+    console.error('Fundamento Matemático — fallo de inicialización:', err);
+    document.getElementById('preloader')?.classList.add('is-hidden');
+    document.body.style.overflow = '';
+    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-visible'));
+  }
+});
+
+/* ---------------------------------------------------------
+   Precarga: cuenta de 0 a 100% y desvanece
+--------------------------------------------------------- */
+function initPreloader() {
+  const el = document.getElementById('preloader');
+  const count = document.getElementById('preloaderCount');
+  const bar = document.getElementById('preloaderBar');
+  if (!el) return;
+
+  if (prefersReducedMotion) {
+    el.classList.add('is-hidden');
+    document.body.style.overflow = '';
+    return;
+  }
+
+  document.body.style.overflow = 'hidden';
+  const duration = 1100;
+  const start = performance.now();
+
+  function tick(now) {
+    const elapsed = now - start;
+    const progress = Math.min(1, elapsed / duration);
+    const pct = Math.round(progress * 100);
+    count.textContent = `${pct}%`;
+    bar.style.width = `${pct}%`;
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      setTimeout(() => {
+        el.classList.add('is-hidden');
+        document.body.style.overflow = '';
+      }, 180);
+    }
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ---------------------------------------------------------
+   Nav: fondo sólido tras hacer scroll
+--------------------------------------------------------- */
+function initHeaderState() {
+  const header = document.getElementById('siteHeader');
+  if (!header) return;
+  const onScroll = () => {
+    header.classList.toggle('is-solid', window.scrollY > 12);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+/* ---------------------------------------------------------
+   Barra de progreso de lectura
+--------------------------------------------------------- */
+function initProgressBar() {
+  const fill = document.getElementById('progressFill');
+  if (!fill) return;
+  const onScroll = () => {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const height = doc.scrollHeight - doc.clientHeight;
+    const pct = height > 0 ? (scrollTop / height) * 100 : 0;
+    fill.style.width = `${pct}%`;
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+}
+
+/* ---------------------------------------------------------
+   Reloj en vivo — Bogotá
+--------------------------------------------------------- */
+function initClock() {
+  const timeEls = [document.getElementById('clockTime'), document.getElementById('clockTimeFooter')].filter(Boolean);
+  if (!timeEls.length) return;
+
+  const formatter = new Intl.DateTimeFormat('es-CO', {
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false, timeZone: 'America/Bogota',
+  });
+
+  function tick() {
+    const formatted = formatter.format(new Date());
+    timeEls.forEach((el) => { el.textContent = formatted; });
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* ---------------------------------------------------------
+   Scroll reveal — variantes por sección (fade / lines / up / left / right)
+--------------------------------------------------------- */
+function initReveals() {
+  const items = document.querySelectorAll('.reveal');
+  if (!items.length) return;
+
+  if (prefersReducedMotion) {
+    items.forEach((el) => el.classList.add('is-visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+
+  items.forEach((el) => observer.observe(el));
+}
+
+/* ---------------------------------------------------------
+   Capas con parallax — profundidad ligada al centro de cada sección
+--------------------------------------------------------- */
+function initParallax() {
+  const layers = Array.from(document.querySelectorAll('.parallax-layer'));
+  if (!layers.length || prefersReducedMotion) return;
+
+  let ticking = false;
+
+  function update() {
+    const viewportCenter = window.innerHeight / 2;
+    layers.forEach((el) => {
+      const speed = parseFloat(el.dataset.speed || '0.1');
+      const rect = el.getBoundingClientRect();
+      const elementCenter = rect.top + rect.height / 2;
+      const delta = (viewportCenter - elementCenter) * speed;
+      el.style.transform = `translate3d(0, ${delta.toFixed(1)}px, 0)`;
+    });
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+}
+
+/* ---------------------------------------------------------
+   Indicador "desliza para explorar": baja a la sección siguiente
+--------------------------------------------------------- */
+function initScrollCue() {
+  const cue = document.getElementById('scrollCue');
+  if (!cue) return;
+  cue.addEventListener('click', () => {
+    const next = document.querySelector('.manifesto');
+    if (next) next.scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
+/* ---------------------------------------------------------
+   Contadores animados (cifras)
+--------------------------------------------------------- */
+function initCounters() {
+  const numbers = document.querySelectorAll('.stat-number');
+  if (!numbers.length) return;
+
+  function animate(el) {
+    const target = parseFloat(el.dataset.count || '0');
+    const suffix = el.dataset.suffix || '';
+    if (prefersReducedMotion) {
+      el.textContent = `${target}${suffix}`;
+      return;
+    }
+    const duration = 1200;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = Math.round(target * eased);
+      el.textContent = `${value}${suffix}`;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        animate(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.6 });
+
+  numbers.forEach((el) => observer.observe(el));
+}
+
+/* ---------------------------------------------------------
+   Laboratorio — pestañas
+--------------------------------------------------------- */
+function initTabs() {
+  const tabs = document.querySelectorAll('.lab-tab');
+  const panels = {
+    manipulativos: document.getElementById('panel-manipulativos'),
+    geometria: document.getElementById('panel-geometria'),
+    mapas: document.getElementById('panel-mapas'),
+  };
+  if (!tabs.length) return;
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((t) => {
+        t.classList.remove('is-active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('is-active');
+      tab.setAttribute('aria-selected', 'true');
+
+      Object.values(panels).forEach((p) => p.classList.add('hidden'));
+      panels[tab.dataset.tab].classList.remove('hidden');
+    });
+  });
+}
+
+/* ---------------------------------------------------------
+   Laboratorio — manipulativos arrastrables
+--------------------------------------------------------- */
+function initShapes() {
+  const canvas = document.getElementById('shapeCanvas');
+  const areaLabel = document.getElementById('areaTotal');
+  const resetBtn = document.getElementById('resetShapes');
+  if (!canvas) return;
+
+  const pieceDefs = [
+    { area: 4, color: '#2563EB', w: 80, h: 80, shape: 'M0,0 H80 V80 H0 Z' },
+    { area: 4.5, color: '#7C3AED', w: 100, h: 90, shape: 'M0,90 L50,0 L100,90 Z' },
+    { area: 6, color: '#F97316', w: 120, h: 50, shape: 'M0,0 H120 V50 H0 Z' },
+    { area: 3, color: '#EF4444', w: 70, h: 70, shape: 'M35,0 L70,35 L35,70 L0,35 Z' },
+    { area: 4, color: '#16A34A', w: 80, h: 76, shape: 'M40,0 L80,29 L64,76 L16,76 L0,29 Z' },
+  ];
+
+  function layout() {
+    canvas.innerHTML = '';
+    const cw = canvas.clientWidth;
+    const ch = canvas.clientHeight;
+    let total = 0;
+
+    pieceDefs.forEach((def, i) => {
+      total += def.area;
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      el.classList.add('manip-piece');
+      el.setAttribute('width', def.w);
+      el.setAttribute('height', def.h);
+      el.setAttribute('viewBox', `0 0 ${def.w} ${def.h}`);
+      el.innerHTML = `<path d="${def.shape}" fill="${def.color}" fill-opacity="0.85" stroke="${def.color}" stroke-width="2"/>`;
+
+      const startX = 20 + (i % 3) * (cw - 60) / 3;
+      const startY = 20 + Math.floor(i / 3) * (ch - 120) / 2 + (i % 2) * 20;
+      el.style.left = `${Math.max(10, Math.min(cw - def.w - 10, startX))}px`;
+      el.style.top = `${Math.max(10, Math.min(ch - def.h - 10, startY))}px`;
+
+      makeDraggable(el, canvas);
+      canvas.appendChild(el);
+    });
+
+    if (areaLabel) areaLabel.textContent = total.toFixed(1);
+  }
+
+  function makeDraggable(el, bounds) {
+    let offsetX = 0, offsetY = 0, dragging = false;
+
+    const onDown = (clientX, clientY) => {
+      const rect = el.getBoundingClientRect();
+      offsetX = clientX - rect.left;
+      offsetY = clientY - rect.top;
+      dragging = true;
+      el.style.zIndex = 10;
+    };
+    const onMove = (clientX, clientY) => {
+      if (!dragging) return;
+      const boundsRect = bounds.getBoundingClientRect();
+      let x = clientX - boundsRect.left - offsetX;
+      let y = clientY - boundsRect.top - offsetY;
+      x = Math.max(-20, Math.min(bounds.clientWidth - 20, x));
+      y = Math.max(-20, Math.min(bounds.clientHeight - 20, y));
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+    };
+    const onUp = () => { dragging = false; el.style.zIndex = 1; };
+
+    el.addEventListener('mousedown', (e) => onDown(e.clientX, e.clientY));
+    window.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY));
+    window.addEventListener('mouseup', onUp);
+
+    el.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      onDown(t.clientX, t.clientY);
+    }, { passive: true });
+    window.addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      onMove(t.clientX, t.clientY);
+    }, { passive: true });
+    window.addEventListener('touchend', onUp);
+  }
+
+  layout();
+  if (resetBtn) resetBtn.addEventListener('click', layout);
+  window.addEventListener('resize', () => {
+    if (!document.getElementById('panel-manipulativos').classList.contains('hidden')) layout();
+  });
+}
+
+/* ---------------------------------------------------------
+   Laboratorio — graficador de f(x) = ax² + bx + c
+--------------------------------------------------------- */
+function initFunctionPlot() {
+  const canvas = document.getElementById('functionPlot');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const sliderA = document.getElementById('sliderA');
+  const sliderB = document.getElementById('sliderB');
+  const sliderC = document.getElementById('sliderC');
+  const coefA = document.getElementById('coefA');
+  const coefB = document.getElementById('coefB');
+  const coefC = document.getElementById('coefC');
+  const readout = document.getElementById('functionReadout');
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = canvas.clientWidth * dpr;
+    canvas.height = canvas.clientHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    draw();
+  }
+
+  function draw() {
+    const a = parseFloat(sliderA.value);
+    const b = parseFloat(sliderB.value);
+    const c = parseFloat(sliderC.value);
+    coefA.textContent = a;
+    coefB.textContent = b;
+    coefC.textContent = c;
+
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+
+    const xRange = 10;
+    const yRange = 10;
+    const toPx = (x, y) => [
+      w / 2 + (x / xRange) * (w / 2),
+      h / 2 - (y / yRange) * (h / 2),
+    ];
+
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 1;
+    for (let gx = -xRange; gx <= xRange; gx += 2) {
+      const [px] = toPx(gx, 0);
+      ctx.beginPath(); ctx.moveTo(px, 0); ctx.lineTo(px, h); ctx.stroke();
+    }
+    for (let gy = -yRange; gy <= yRange; gy += 2) {
+      const [, py] = toPx(0, gy);
+      ctx.beginPath(); ctx.moveTo(0, py); ctx.lineTo(w, py); ctx.stroke();
+    }
+    ctx.strokeStyle = '#94a3b8';
+    ctx.lineWidth = 1.5;
+    const [ox] = toPx(0, 0); const [, oy] = toPx(0, 0);
+    ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, h); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(w, oy); ctx.stroke();
+
+    ctx.beginPath();
+    ctx.strokeStyle = '#2563EB';
+    ctx.lineWidth = 3;
+    let started = false;
+    for (let px = 0; px <= w; px++) {
+      const x = ((px - w / 2) / (w / 2)) * xRange;
+      const y = a * x * x + b * x + c;
+      const [, py] = toPx(x, y);
+      if (py < -50 || py > h + 50) { started = false; continue; }
+      if (!started) { ctx.moveTo(px, py); started = true; }
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+
+    if (a !== 0) {
+      const vx = -b / (2 * a);
+      const vy = a * vx * vx + b * vx + c;
+      const [pvx, pvy] = toPx(vx, vy);
+      if (pvx >= 0 && pvx <= w && pvy >= 0 && pvy <= h) {
+        ctx.beginPath();
+        ctx.fillStyle = '#7C3AED';
+        ctx.arc(pvx, pvy, 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      const disc = b * b - 4 * a * c;
+      if (disc >= 0) {
+        const r1 = (-b + Math.sqrt(disc)) / (2 * a);
+        const r2 = (-b - Math.sqrt(disc)) / (2 * a);
+        [r1, r2].forEach((r) => {
+          const [prx, pry] = toPx(r, 0);
+          if (prx >= 0 && prx <= w) {
+            ctx.beginPath();
+            ctx.fillStyle = '#EF4444';
+            ctx.arc(prx, pry, 4.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        });
+      }
+
+      const discTxt = disc >= 0
+        ? `dos raíces reales (${((-b + Math.sqrt(disc)) / (2 * a)).toFixed(2)} y ${((-b - Math.sqrt(disc)) / (2 * a)).toFixed(2)})`
+        : 'sin raíces reales (el discriminante es negativo)';
+      readout.textContent = `Vértice en (${vx.toFixed(2)}, ${vy.toFixed(2)}) · concavidad hacia ${a > 0 ? 'arriba' : 'abajo'} · ${discTxt}.`;
+    } else {
+      readout.textContent = 'Con a = 0, la función es lineal: b es la pendiente y c el corte con el eje y.';
+    }
+  }
+
+  [sliderA, sliderB, sliderC].forEach((s) => s.addEventListener('input', draw));
+  window.addEventListener('resize', resize);
+  resize();
+}
+
+/* ---------------------------------------------------------
+   Laboratorio — mapa conceptual clicable
+--------------------------------------------------------- */
+function initMindMap() {
+  const svg = document.getElementById('mindMap');
+  const readout = document.getElementById('mindMapReadout');
+  if (!svg) return;
+
+  const nodes = [
+    { id: 'patrones', label: 'Patrones numéricos', x: 90, y: 160, color: '#2563EB',
+      desc: 'Punto de partida: reconocer regularidades en secuencias de números.' },
+    { id: 'funciones', label: 'Función', x: 260, y: 90, color: '#7C3AED',
+      desc: 'Generaliza un patrón como una relación entre variables.' },
+    { id: 'lineal', label: 'Función lineal', x: 260, y: 230, color: '#7C3AED',
+      desc: 'Caso particular de función con razón de cambio constante.' },
+    { id: 'cuadratica', label: 'Función cuadrática', x: 430, y: 90, color: '#16A34A',
+      desc: 'Modela fenómenos con tasa de cambio variable — clave en el nivel 3 y 4 del Icfes.' },
+    { id: 'sistemas', label: 'Sistemas de ecuaciones', x: 430, y: 230, color: '#16A34A',
+      desc: 'Combina varias funciones lineales para resolver problemas con múltiples condiciones.' },
+    { id: 'optimizacion', label: 'Modelos de optimización', x: 580, y: 160, color: '#F97316',
+      desc: 'Aplica funciones cuadráticas y sistemas para maximizar o minimizar una cantidad.' },
+  ];
+
+  const edges = [
+    ['patrones', 'funciones'], ['patrones', 'lineal'],
+    ['funciones', 'cuadratica'], ['lineal', 'sistemas'],
+    ['cuadratica', 'optimizacion'], ['sistemas', 'optimizacion'],
+  ];
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const edgeEls = [];
+
+  edges.forEach(([fromId, toId]) => {
+    const from = nodes.find((n) => n.id === fromId);
+    const to = nodes.find((n) => n.id === toId);
+    const line = document.createElementNS(svgNS, 'line');
+    line.setAttribute('x1', from.x); line.setAttribute('y1', from.y);
+    line.setAttribute('x2', to.x); line.setAttribute('y2', to.y);
+    line.setAttribute('stroke', '#cbd5e1');
+    line.setAttribute('stroke-width', '2');
+    line.classList.add('map-edge');
+    line.dataset.from = fromId;
+    line.dataset.to = toId;
+    svg.appendChild(line);
+    edgeEls.push(line);
+  });
+
+  nodes.forEach((n) => {
+    const g = document.createElementNS(svgNS, 'g');
+    g.classList.add('map-node');
+    g.dataset.id = n.id;
+
+    const circle = document.createElementNS(svgNS, 'circle');
+    circle.setAttribute('cx', n.x); circle.setAttribute('cy', n.y);
+    circle.setAttribute('r', 30);
+    circle.setAttribute('fill', n.color);
+    circle.setAttribute('fill-opacity', '0.14');
+    circle.setAttribute('stroke', n.color);
+    circle.setAttribute('stroke-width', '2');
+    g.appendChild(circle);
+
+    const text = document.createElementNS(svgNS, 'text');
+    text.setAttribute('x', n.x);
+    text.setAttribute('y', n.y + 48);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('font-size', '12');
+    text.setAttribute('font-family', 'Manrope, sans-serif');
+    text.setAttribute('font-weight', '600');
+    text.setAttribute('fill', '#334155');
+    text.textContent = n.label;
+    g.appendChild(text);
+
+    g.addEventListener('click', () => {
+      nodes.forEach((other) => {
+        const c = svg.querySelector(`g[data-id="${other.id}"] circle`);
+        c.setAttribute('fill-opacity', other.id === n.id ? '0.85' : '0.14');
+      });
+      edgeEls.forEach((edge) => {
+        const connected = edge.dataset.from === n.id || edge.dataset.to === n.id;
+        edge.setAttribute('stroke', connected ? n.color : '#cbd5e1');
+        edge.setAttribute('stroke-width', connected ? '3' : '2');
+      });
+      readout.textContent = `${n.label}: ${n.desc}`;
+    });
+
+    svg.appendChild(g);
+  });
+}
+
+</script>
+</body>
+</html>
